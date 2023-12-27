@@ -1,0 +1,55 @@
+name: Makefile CI
+
+on: push
+
+env:
+  BUILDS: ${{ github.workspace }}
+
+jobs:
+  build:
+    permissions:
+      contents: write
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Import manifest
+      run: cat manifest >> ${GITHUB_ENV}
+
+    - name: Prepare package name
+      run: echo "PACKAGE_NAME="$(basename ${GITHUB_REPOSITORY})-${major_version}.${minor_version}.${build_version}.zip >> ${GITHUB_ENV};
+
+    - name: Build library
+      run: |
+        echo "Building lib ${{ env.PACKAGE_NAME }}";
+        make build BUILD_DIR=${{ env.BUILDS }} ZIP=lib-${{ env.PACKAGE_NAME }};
+
+    - name: List files
+      run: ls -la
+
+    - name: Build example
+      run: |
+        echo "Building example of ${{ env.PACKAGE_NAME }}";
+        make build_example BUILD_DIR=${{ env.BUILDS }} ZIP=example-${{ env.PACKAGE_NAME }};
+
+    - name: Store ZIPs as artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ env.PACKAGE_NAME }}
+        path: ${{ env.BUILDS }}/*.zip
+
+    - name: List files
+      run: ls -la
+
+    - name: Release
+      if: startsWith(github.ref, 'refs/tags/')
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: >-
+        gh release create ${{ github.ref_name }}
+        "lib-${{ env.PACKAGE_NAME }}"
+        "example-${{ env.PACKAGE_NAME }}"
+        --generate-notes
+        --title "${{ github.ref_name }}"
