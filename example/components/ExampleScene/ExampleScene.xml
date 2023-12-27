@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="ExampleScene" extends="Scene">
+	<script type="text/brightscript" uri="ExampleScene.brs" />
+
+	<children>
+		<Label
+			id="statusInfo"
+			translation="[200, 100]" />
+		<Label
+			id="performanceInfo"
+			translation="[200, 150]" />
+		<Label
+			id="fileInfo"
+			translation="[800, 100]" />
+		<Label
+			id="paddingInfo"
+			translation="[800, 150]" />
+		<Label
+			id="overlayMarker"
+			horizAlign="center"
+			vertAlign="center"
+			text="→&#xA;←"
+			width="60"
+			height="540"
+			maxLines="2"
+			wrap="true"
+			lineSpacing="-20"
+			translation="[740, 300]" />
+		<Label
+			id="controlInfo"
+			text="Use arrows, option and replay buttons on your remote controller to control examples."
+			translation="[200, 900]" />
+
+		<Group
+			id="prerenderedGroup"
+			translation="[200, 250]">
+			<Label
+				id="prerenderedLabel"
+				text="pre-rendered:" />
+			<Rectangle
+				id="prerenderedBackground"
+				width="540"
+				height="540"
+				color="#ffffff"
+				translation="[0, 50]">
+				<Poster
+					id="prerenderedCode"
+					width="500"
+					height="500"
+					uri="pkg:/components/ExampleScene/testCode.png"
+					blendColor="#000000"
+					translation="[20, 20]" />
+			</Rectangle>
+		</Group>
+
+		<Group
+			id="renderedGroup"
+			translation="[800, 250]">
+			<Label
+				id="renderedLabel"
+				text="rendered:" />
+			<Rectangle
+				id="renderedBackground"
+				width="540"
+				height="540"
+				color="#ffffff"
+				translation="[0, 50]">
+				<SimpleSVGView
+					id="renderedCode"
+					width="500"
+					height="500"
+					padding="-1"
+					blendColor="#FFFFFF"
+					translation="[20, 20]" />
+			</Rectangle>
+		</Group>
+
+		<Animation
+			id="overlayAnimation"
+			repeat="false"
+			easeFunction="inOutCubic"
+			duration="0.5">
+			<Vector2DFieldInterpolator
+				id="translatePrerendered"
+				key="[0.0, 1.0]"
+				keyValue="[[200, 250], [470, 250]]"
+				fieldToInterp="prerenderedGroup.translation" />
+			<Vector2DFieldInterpolator
+				id="translateRendered"
+				key="[0.0, 1.0]"
+				keyValue="[[800, 250], [470, 250]]"
+				fieldToInterp="renderedGroup.translation" />
+			<Vector2DFieldInterpolator
+				id="translateRenderedLabel"
+				key="[0.0, 1.0]"
+				keyValue="[[0, 0], [330, 0]]"
+				fieldToInterp="renderedLabel.translation" />
+			<FloatFieldInterpolator
+				id="morphRendered"
+				key="[0.0, 1.0]"
+				keyValue="[1.0, 0.6]"
+				fieldToInterp="renderedBackground.opacity" />
+			<FloatFieldInterpolator
+				id="morphRenderedLabel"
+				key="[0.0, 1.0]"
+				keyValue="[1.0, 0.6]"
+				fieldToInterp="renderedLabel.opacity" />
+			<ColorFieldInterpolator
+				id="colorizePrerenderedCode"
+				key="[0.0, 1.0]"
+				keyValue="[0x000000FF, 0xFF00FFFF]"
+				fieldToInterp="prerenderedCode.blendColor" />
+			<ColorFieldInterpolator
+				id="colorizePrerenderedLabel"
+				key="[0.0, 1.0]"
+				keyValue="[0xFFFFFFFF, 0xFF00FFFF]"
+				fieldToInterp="prerenderedLabel.color" />
+		</Animation>
+	</children>
+</component>

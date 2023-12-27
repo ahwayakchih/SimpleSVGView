@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="SimpleSVGView" extends="Group">
+	<script type="text/brightscript" uri="SimpleSVGView.brs" />
+
+	<interface>
+		<!-- Read-only -->
+		<field id="status" type="string" alwaysNotify="true" />
+		<field id="performanceInfo" type="assocarray" />
+		<field id="uri" type="string" alias="renderedImage.uri" />
+
+		<!-- Write-only -->
+		<field id="width" type="float" alias="renderedImage.width" />
+		<field id="height" type="float" alias="renderedImage.height" />
+		<!-- Set to -1 to keep whatever was in SVG file, set to 0 or more to use custom "frame" size. -->
+		<field id="padding" type="float" value="-1" />
+		<!-- Set to anything other than the default #FFFFFFFF to force using that value instead of the one from SVG. -->
+		<field id="blendColor" type="color" alias="renderedImage.blendColor" />
+
+		<!-- Set this LAST, because every change to width or height requires re-rendering bitmap image. -->
+		<field id="svgData" type="string" alwaysNotify="true" />
+	</interface>
+
+	<children>
+		<Poster
+			id="renderedImage"
+			width="500"
+			height="500" />
+	</children>
+</component>

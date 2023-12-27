@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- 
+	This is a VERY naive, simple parser and renderer specialized for QRCode SVGs that use Path element.
+
+	It assumes that viewBox is set to 0, 0, Width, Height.
+	It does not support tricks with viewbox starting at any point other than 0,0.
+
+	SVG data should be a single Path element, with multiple sets of M, m, L, l, H, h, V, v and z commands.
+	Path data should represent a list of square "pixels" (like bits of QRCode), so it can be any of:
+
+	- M num L num L num L num z
+	- M num num num num z
+	- M num h num v num h -num z
+	- M num v num h num -v num z
+
+	Passing data that draws anything but squares will result in broken rendering at best, and nothing at all at worst.
+ -->
+<component name="SimpleSVGTask" extends="Task">
+	<script type="text/brightscript" uri="SimpleSVGTask.brs" />
+
+	<interface>
+		<!--
+			`functionName` can be set to one of the following:
+			- `svgToPNG`: turn SVG into PNG, set `renderedImagePath` to point to the generated PNG file;
+			- `svgToQRBits`: parse `svgData` into `qrBits`, where `true` means that bit is set;
+			- `qrBitsToPNG`: turn `qrBits` into PNG image, set `renderedImagePath` to point to the generated PNG file;
+			- `svgToQRBitsToPNG`: parse `svgData` into `qrBits` and them into PNG with `renderedImagePath` as above.
+		-->
+
+		<!--
+			Write-only
+		-->
+		<field id="svgData" type="string" value="" />
+		<field id="width" type="float" value="500" />
+		<field id="height" type="float" value="500" />
+		<!-- Custom padding is respected only when creating PNG from `qrBits`. -->
+		<field id="padding" type="float" value="0.0" />
+		<!-- Set to non-zero alpha to force using custom color instead of the one from SVG. -->
+		<field id="color" type="color" value="#00000000" />
+		<!-- Should be either "tmp:/" or "cachefs:/". It can accept longer path, but it MUST exist already. -->
+		<field id="cachePath" type="string" value="tmp:/" />
+
+		<!--
+			Read and write
+		-->
+		<!--
+			This will be filled with bits parsed from `svgData`.
+			To get the size of a single row (width) or column (height) of bits, use `sqr(qrBits.count())`.
+		-->
+		<field id="qrBits" type="boolarray" value="[]" />
+
+		<!--
+			Read-only
+		-->
+		<field id="status" type="string" value="" alwaysNotify="true" />
+		<field id="performanceInfo" type="assocarray" />
+		<!-- This is set when any of the `*ToPNG` functions is run -->
+		<field id="renderedImagePath" type="string" value="" />
+		<!-- This is set when `qrBits` are set -->
+		<field id="qrString" type="string" value="" />
+	</interface>
+</component>
