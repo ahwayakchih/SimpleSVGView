@@ -41,7 +41,7 @@ Once environment is configured, simply run:
 make test
 ```
 
-It should package example, sideload it to Roku device and launch app that shows QRCodes on screen.
+It should package example, sideload it to Roku device and launch app that shows QRCodes on screen:
 
 ![example screenhot](example/screenshot.png)
 

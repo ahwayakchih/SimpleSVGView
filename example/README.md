@@ -10,5 +10,7 @@ to the pre-rendered PNGs.
   formatted in different way inside SVG file).
 - Use **replay** (⟲ - "circled arrow") button to force re-rendering SVG, instead of just
   loading from cache what was already rendered before.
+- Use **OK** button to switch between local component and one loaded dynamically from
+  GitHub repository.
 
 ![example screenhot](screenshot.png)

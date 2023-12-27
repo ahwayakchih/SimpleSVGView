@@ -28,7 +28,7 @@
 			translation="[740, 300]" />
 		<Label
 			id="controlInfo"
-			text="Use arrows, option and replay buttons on your remote controller to control examples."
+			text="Use arrows, option, replay and OK buttons on your remote controller to control examples."
 			translation="[200, 900]" />
 
 		<Group
@@ -58,7 +58,7 @@
 			translation="[800, 250]">
 			<Label
 				id="renderedLabel"
-				text="rendered:" />
+				text="rendered with local SVGView:" />
 			<Rectangle
 				id="renderedBackground"
 				width="540"

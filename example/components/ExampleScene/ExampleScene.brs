@@ -3,6 +3,8 @@ sub init()
 	m.performanceInfo = m.top.findNode("performanceInfo")
 	m.fileInfo = m.top.findNode("fileInfo")
 	m.paddingInfo = m.top.findNode("paddingInfo")
+	m.renderedLabel = m.top.findNode("renderedLabel")
+	m.renderedBackground = m.top.findNode("renderedBackground")
 	m.renderedCode = m.top.findNode("renderedCode")
 	m.prerenderedCode = m.top.findNode("prerenderedCode")
 
@@ -13,6 +15,10 @@ sub init()
 	initAnimationNodes()
 
 	updateStatus("")
+
+	m.isUsingLocalComponent = true
+	m.localRenderedCode = m.renderedCode
+	m.libRenderedCode = invalid
 
 	m.renderedCode.observeFieldScoped("status", "onStatusChange", ["performanceInfo"])
 
@@ -54,7 +60,42 @@ sub initAnimationNodes()
 	end for
 end sub
 
+sub setLibComponent()
+	m.renderedBackground.removeChild(m.renderedCode)
+	m.libRenderedCode = createObject("roSGNode", "SimpleSVGView:SimpleSVGView")
+
+	if m.libRenderedCode = invalid
+		updateStatus("Failed to create SimpleSVGView:SimpleSVGView")
+		setLocalComponent()
+		return
+	end if
+
+	m.libRenderedCode.observeFieldScoped("status", "onStatusChange", ["performanceInfo"])
+	m.libRenderedCode.setFields({
+		id: m.renderedCode.id,
+		width: m.renderedCode.width,
+		height: m.renderedCode.height,
+		padding: m.renderedCode.padding,
+		blendColor: m.renderedCode.blendColor,
+		translation: m.renderedCode.translation,
+		svgData: m.renderedCode.svgData
+	})	
+	m.renderedCode = m.libRenderedCode
+
+	m.renderedLabel.text = "rendered with SVGView from lib:"
+	m.renderedBackground.appendChild(m.renderedCode)
+end sub
+
+sub setLocalComponent()
+	m.renderedBackground.removeChild(m.renderedCode)
+	m.renderedCode = m.localRenderedCode
+	m.renderedBackground.appendChild(m.localRenderedCode)
+	m.renderedLabel.text = "rendered with local SVGView:"
+	resetExample()
+end sub
+
 sub updateStatus(message as string, performanceInfo = {} as object)
+	print "Status: " + message
 	m.statusInfo.text = "Status: " + message
 
 	padding = m.renderedCode.padding
@@ -175,19 +216,34 @@ function togglePadding() as boolean
 	return true
 end function
 
-function setOverlay(direction = 0 as integer) as boolean
-	if m.currentOverlay = invalid
-		m.currentOverlay = 0
+function toggleComponent() as boolean
+	isLocal = (m.isUsingLocalComponent = true)
+	m.isUsingLocalComponent = not isLocal
+
+	if isLocal
+		if m.componentLib = invalid or m.componentLib.loadStatus = "failed"
+			m.componentLib = createObject("roSGNode", "ComponentLibrary")
+			m.componentLib.observeFieldScoped("loadStatus", "onComponentLibraryStatusChange")
+			m.componentLib.id = "LibSimpleSVGView"
+			m.componentLib.uri = "https://github.com/ahwayakchih/SimpleSVGView/releases/download/v0.2.0/lib-SimpleSVGView-0.1.0.zip"
+		else if m.componentLib.loadStatus = "ready"
+			setLibComponent()
+		end if
+	else
+		setLocalComponent()
 	end if
-
-	if direction = 0
-
-	end if
-
 end function
 
 sub onStatusChange(event as object)
-	updateStatus(event.getData(), event.getInfo()?.performanceInfo)
+	updateStatus("[SVG] " + event.getData(), event.getInfo()?.performanceInfo)
+end sub
+
+sub onComponentLibraryStatusChange(event as object)
+	status = event.getData()
+	updateStatus("[Lib] " + status)
+	if status = "ready"
+		setLibComponent()
+	end if
 end sub
 
 function onKeyEvent(key as string, pressed as boolean) as boolean
@@ -202,6 +258,8 @@ function onKeyEvent(key as string, pressed as boolean) as boolean
 		return not pressed or resetExample()
 	else if key = "options"
 		return not pressed and togglePadding()
+	else if key = "OK"
+		return not pressed and toggleComponent()
 	end if
 
 	return false
