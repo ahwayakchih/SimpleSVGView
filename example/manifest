@@ -1,9 +1,9 @@
-title=SimpleSVGView
-subtitle=Very limited SVG view
+title=SimpleSVGView Example
+subtitle=See how SimpleSVGView can be used
 
 major_version=0
-minor_version=1
-build_version=0
+minor_version=2
+build_version=1
 
 ui_resolutions=fhd
 rsg_version=1.2

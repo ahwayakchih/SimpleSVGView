@@ -222,10 +222,12 @@ function toggleComponent() as boolean
 
 	if isLocal
 		if m.componentLib = invalid or m.componentLib.loadStatus = "failed"
+			appInfo = createObject("roAppInfo")
+			version = appInfo.getVersion()
 			m.componentLib = createObject("roSGNode", "ComponentLibrary")
 			m.componentLib.observeFieldScoped("loadStatus", "onComponentLibraryStatusChange")
 			m.componentLib.id = "LibSimpleSVGView"
-			m.componentLib.uri = "https://github.com/ahwayakchih/SimpleSVGView/releases/download/v0.2.0/lib-SimpleSVGView-0.1.0.zip"
+			m.componentLib.uri = "https://github.com/ahwayakchih/SimpleSVGView/releases/download/v"+version+"/lib-SimpleSVGView-"+version+".zip"
 		else if m.componentLib.loadStatus = "ready"
 			setLibComponent()
 		end if
