@@ -5,16 +5,16 @@
 	<children>
 		<Label
 			id="statusInfo"
-			translation="[200, 100]" />
+			translation="[150, 80]" />
 		<Label
 			id="performanceInfo"
-			translation="[200, 150]" />
+			translation="[150, 130]" />
 		<Label
 			id="fileInfo"
-			translation="[800, 100]" />
+			translation="[750, 80]" />
 		<Label
 			id="paddingInfo"
-			translation="[800, 150]" />
+			translation="[750, 130]" />
 		<Label
 			id="overlayMarker"
 			horizAlign="center"
@@ -25,24 +25,30 @@
 			maxLines="2"
 			wrap="true"
 			lineSpacing="-20"
-			translation="[740, 300]" />
+			translation="[690, 280]" />
 		<Label
 			id="controlInfo"
-			text="Use arrows, option, replay and OK buttons on your remote controller to control examples."
-			translation="[200, 900]" />
+			text="Use your remote controller buttons: arrows to switch SVG files (↑ ↓) and toggle overlay mode (← →), options (*) to switch paddings, replay to re-render SVG and OK to toggle between local component and downloaded library."
+			width="1520"
+			height="150"
+			maxLines="3"
+			wrap="true"
+			translation="[150, 860]" />
 
 		<Group
 			id="prerenderedGroup"
-			translation="[200, 250]">
+			translation="[150, 230]">
 			<Label
 				id="prerenderedLabel"
-				text="pre-rendered:" />
+				text="pre-rendered PNG:"
+				font="font:SmallestSystemFont"
+				height="20" />
 			<Rectangle
 				id="prerenderedBackground"
 				width="540"
 				height="540"
 				color="#ffffff"
-				translation="[0, 50]">
+				translation="[0, 30]">
 				<Poster
 					id="prerenderedCode"
 					width="500"
@@ -55,16 +61,18 @@
 
 		<Group
 			id="renderedGroup"
-			translation="[800, 250]">
+			translation="[750, 230]">
 			<Label
 				id="renderedLabel"
-				text="rendered with local SVGView:" />
+				text="rendered with local SVGView:"
+				font="font:SmallestSystemFont"
+				height="20" />
 			<Rectangle
 				id="renderedBackground"
 				width="540"
 				height="540"
 				color="#ffffff"
-				translation="[0, 50]">
+				translation="[0, 30]">
 				<SimpleSVGView
 					id="renderedCode"
 					width="500"
@@ -83,12 +91,12 @@
 			<Vector2DFieldInterpolator
 				id="translatePrerendered"
 				key="[0.0, 1.0]"
-				keyValue="[[200, 250], [470, 250]]"
+				keyValue="[[150, 230], [420, 230]]"
 				fieldToInterp="prerenderedGroup.translation" />
 			<Vector2DFieldInterpolator
 				id="translateRendered"
 				key="[0.0, 1.0]"
-				keyValue="[[800, 250], [470, 250]]"
+				keyValue="[[750, 230], [420, 230]]"
 				fieldToInterp="renderedGroup.translation" />
 			<Vector2DFieldInterpolator
 				id="translateRenderedLabel"
