@@ -1,7 +1,7 @@
 Simple SVG View
 ===============
 
-A VERY naive, simple parser and renderer spacializing in SVG files with QRCode encoded in Path element.
+A VERY naive, simple parser and renderer specializing in SVG files with QRCode encoded in Path element.
 
 
 ## Usage
@@ -43,13 +43,13 @@ make test
 
 It should package example, sideload it to Roku device and launch app that shows QRCodes on screen:
 
-![example screenhot](example/screenshot.png)
+![example screenshot](example/screenshot.png)
 
 
 ## TODO
 
 - It would be nice to parse data from QRCode. We already have "bits", we just have to decode them;
-- It could be usefule to suppport also SVGs that use `Rectangle` nodes instead of a single `Path`;
+- It could be useful to support also SVGs that use `Rectangle` nodes instead of a single `Path`;
 - Someday it could support more of SVG and handle generic images, as long as they don't use any curves
   (so not many of them).
   Roku's [Draw2D](https://developer.roku.com/en-gb/docs/references/brightscript/interfaces/ifdraw2d.md)
